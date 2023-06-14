@@ -1,9 +1,9 @@
-import { ReactP5Wrapper, P5CanvasInstance, Sketch } from "@p5-wrapper/react";
+import { ReactP5Wrapper } from "@p5-wrapper/react";
 import {
   templateResponsiveSketch,
-  testSketch,
-  testSketch2,
-} from "../sketches/exampleSketch";
+  mousePositionSketch,
+  perlinSketch,
+} from "../sketches/sketches";
 import { useLayoutEffect, useRef, useState } from "react";
 
 export const Hero = (): JSX.Element => {
@@ -25,32 +25,30 @@ export const Hero = (): JSX.Element => {
     };
 
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
 
-  // I do I make multiple sketches all repsonsive?
-  // Can I use Higher order components to wrap the Wrapper component with this functionality
   return (
     <div className="flex-center">
-      {/* <div className="sketch-container" ref={container}> */}
-      {/* <ReactP5Wrapper
+      <div className="sketch-container" ref={container}>
+        <ReactP5Wrapper
           sketch={templateResponsiveSketch}
           height={height}
           width={width}
         />
-      </div> */}
-      <div className="sketch-container" ref={container}>
-        <ReactP5Wrapper sketch={testSketch2} height={height} width={width} />
-      </div>
-      {/* <div className="sketch-container" ref={container}>
-        <ReactP5Wrapper sketch={sketch} height={height} width={width} />
       </div>
       <div className="sketch-container" ref={container}>
-        <ReactP5Wrapper sketch={sketch} height={height} width={width} />
-      </div> */}
+        <ReactP5Wrapper
+          sketch={mousePositionSketch}
+          height={height}
+          width={width}
+        />
+      </div>
+      <div className="sketch-container" ref={container}>
+        <ReactP5Wrapper sketch={perlinSketch} height={height} width={width} />
+      </div>
     </div>
   );
 };
