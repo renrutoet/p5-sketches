@@ -12,11 +12,14 @@
 .flex-center {
     height: 100%;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
 }
 
 .sketch-container {
+    margin: 1rem;
     width: 90vw;
     height: 90vh;
+    /* flex: 0 1 40%; */
 }
