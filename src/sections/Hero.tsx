@@ -2,7 +2,8 @@ import { ReactP5Wrapper } from "@p5-wrapper/react";
 import {
   templateResponsiveSketch,
   mousePositionSketch,
-  perlinSketch,
+  invertingWavesSketch,
+  PerlinContourSketch,
 } from "../sketches/sketches";
 import { useLayoutEffect, useRef, useState } from "react";
 
@@ -34,20 +35,10 @@ export const Hero = (): JSX.Element => {
     <div className="flex-center">
       <div className="sketch-container" ref={container}>
         <ReactP5Wrapper
-          sketch={templateResponsiveSketch}
+          sketch={PerlinContourSketch}
           height={height}
           width={width}
         />
-      </div>
-      <div className="sketch-container" ref={container}>
-        <ReactP5Wrapper
-          sketch={mousePositionSketch}
-          height={height}
-          width={width}
-        />
-      </div>
-      <div className="sketch-container" ref={container}>
-        <ReactP5Wrapper sketch={perlinSketch} height={height} width={width} />
       </div>
     </div>
   );
