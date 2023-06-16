@@ -13,7 +13,8 @@
     "@p5-wrapper/react": "^4.2.0",
     "p5": "^1.6.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "simplex-noise": "^4.0.1"
   },
   "devDependencies": {
     "@types/p5": "^1.6.2",

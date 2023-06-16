@@ -4,6 +4,7 @@ import {
   mousePositionSketch,
   invertingWavesSketch,
   PerlinContourSketch,
+  SimplexContourSketch,
 } from "../sketches/sketches";
 import { useLayoutEffect, useRef, useState } from "react";
 
