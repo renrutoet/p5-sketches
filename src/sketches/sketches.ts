@@ -190,10 +190,12 @@ export const PerlinContourSketch: Sketch = (
 ) => {
   let height = 600;
   let width = 600;
+  let t = 0;
 
   p5.setup = () => {
     p5.createCanvas(width, height, p5.P2D);
     p5.loadPixels();
+    p5.frameRate(30);
   };
 
   p5.updateWithProps = (props: ResponsiveSketchProps) => {
@@ -205,16 +207,23 @@ export const PerlinContourSketch: Sketch = (
     }
   };
 
-  p5.draw = () => {
+  p5.windowResized = () => {
     p5.resizeCanvas(width, height);
+    p5.loadPixels();
+  };
 
-    const resolution = 0.01;
+  p5.draw = () => {
     p5.noStroke();
     p5.fill(0);
 
-    for (let x = 0; x < width; x++) {
-      for (let y = 0; y < height; y++) {
-        const pixel = p5.noise(x * resolution, y * resolution);
+    const scale = 2.5;
+
+    let xoff = 0;
+
+    for (let x = 0; x < width / scale; x++) {
+      let yoff = 0;
+      for (let y = 0; y < height / scale; y++) {
+        const pixel = p5.noise(xoff, yoff, t);
         const bright = p5.map(pixel, 0, 1, 0, 255);
 
         const index = (x + y * width) * 4;
@@ -262,11 +271,18 @@ export const PerlinContourSketch: Sketch = (
         }
 
         p5.pixels[index + 3] = 255;
-
-        // p5.circle(x - width / 2, y - height / 2, 1);
+        yoff += 0.001;
       }
+      xoff += 0.001;
     }
     p5.updatePixels();
-    p5.noLoop();
+
+    // p5.noLoop();
+
+    //upscale canvas
+    const g = p5.get(0, 0, width / scale, height / scale);
+    p5.image(g, 0, 0, width, height);
+
+    t += 0.01;
   };
 };
