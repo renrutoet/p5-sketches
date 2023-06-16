@@ -36,7 +36,7 @@ export const Hero = (): JSX.Element => {
     <div className="flex-center">
       <div className="sketch-container" ref={container}>
         <ReactP5Wrapper
-          sketch={PerlinContourSketch}
+          sketch={SimplexContourSketch}
           height={height}
           width={width}
         />

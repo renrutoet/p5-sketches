@@ -1,5 +1,5 @@
 import { P5CanvasInstance, Sketch } from "@p5-wrapper/react";
-import { createNoise2D } from "simplex-noise";
+import { createNoise3D } from "simplex-noise";
 
 export type ResponsiveSketchProps = {
   height: number;
@@ -110,6 +110,10 @@ export const SimplexContourSketch: Sketch = (
 ) => {
   let height = 600;
   let width = 600;
+  let timeoff = 0;
+  const noise3D = createNoise3D();
+  const timeincrement = 0.005;
+  const scale = 1.5;
 
   p5.setup = () => {
     p5.createCanvas(width, height, p5.P2D);
@@ -126,62 +130,78 @@ export const SimplexContourSketch: Sketch = (
     }
   };
 
-  p5.draw = () => {
+  p5.windowResized = () => {
     p5.resizeCanvas(width, height);
+    p5.loadPixels();
+  };
 
-    const increment = 0.2;
-    p5.noStroke();
-    p5.fill(0);
+  p5.draw = () => {
+    const increment = 0.002;
 
     let xoff = 0;
-    for (let x = 0; x < 100; x++) {
+    for (let x = 0; x < width / scale; x++) {
       let yoff = 0;
-      for (let y = 0; y < 100; y++) {
-        const noise2D = createNoise2D();
-        const pixel = noise2D(xoff, yoff);
+      for (let y = 0; y < height / scale; y++) {
+        const pixel = noise3D(xoff, yoff, timeoff);
         const bright = p5.map(pixel, 0, 1, 0, 255);
-
-        // if (bright > 200) {
-        //   p5.fill(255);
-        // } else if (bright <= 200 && bright > 175) {
-        //   p5.fill(0);
-        // } else if (bright <= 175 && bright > 150) {
-        //   p5.fill(255, 50, 50);
-        // } else if (bright <= 150 && bright > 125) {
-        //   p5.fill(200, 50, 50);
-        // } else if (bright <= 125 && bright > 100) {
-        //   p5.fill(0);
-        // } else if (bright <= 100 && bright > 75) {
-        //   p5.fill(255, 150, 150);
-        // } else if (bright <= 75 && bright > 50) {
-        //   p5.fill(255);
-        // } else if (bright <= 50 && bright > 25) {
-        //   p5.fill(255, 75, 75);
-        // } else if (bright <= 25 && bright >= 0) {
-        //   p5.fill(0);
-        // } else {
-        //   p5.fill(0);
-        // }
-
         const index = (x + y * width) * 4;
-        // p5.pixels[x + y * width] = p5.color(bright,bright,bright);
-        // p5.pixels[index] = 255;
-        // p5.pixels[index + 1] = 255;
-        // p5.pixels[index + 2] = 255;
-        // p5.pixels[index + 3] = 255;
-        p5.pixels[index] = bright;
-        p5.pixels[index + 1] = bright;
-        p5.pixels[index + 2] = bright;
+
+        if (bright > 200) {
+          p5.pixels[index] = 255;
+          p5.pixels[index + 1] = 255;
+          p5.pixels[index + 2] = 255;
+        } else if (bright <= 200 && bright > 175) {
+          p5.pixels[index] = 0;
+          p5.pixels[index + 1] = 0;
+          p5.pixels[index + 2] = 0;
+        } else if (bright <= 175 && bright > 150) {
+          p5.pixels[index] = 255;
+          p5.pixels[index + 1] = 50;
+          p5.pixels[index + 2] = 50;
+        } else if (bright <= 150 && bright > 125) {
+          p5.pixels[index] = 200;
+          p5.pixels[index + 1] = 50;
+          p5.pixels[index + 2] = 50;
+        } else if (bright <= 125 && bright > 100) {
+          p5.pixels[index] = 0;
+          p5.pixels[index + 1] = 0;
+          p5.pixels[index + 2] = 0;
+        } else if (bright <= 100 && bright > 75) {
+          p5.pixels[index] = 255;
+          p5.pixels[index + 1] = 150;
+          p5.pixels[index + 2] = 150;
+        } else if (bright <= 75 && bright > 50) {
+          p5.pixels[index] = 255;
+          p5.pixels[index + 1] = 255;
+          p5.pixels[index + 2] = 255;
+        } else if (bright <= 50 && bright > 25) {
+          p5.pixels[index] = 255;
+          p5.pixels[index + 1] = 75;
+          p5.pixels[index + 2] = 75;
+        } else if (bright <= 25 && bright >= 0) {
+          p5.pixels[index] = 0;
+          p5.pixels[index + 1] = 0;
+          p5.pixels[index + 2] = 0;
+        } else {
+          p5.pixels[index] = 0;
+          p5.pixels[index + 1] = 0;
+          p5.pixels[index + 2] = 0;
+        }
+
         p5.pixels[index + 3] = 255;
-        // p5.circle(x - width / 2, y - height / 2, 1);
-        // }
         yoff += increment;
       }
       xoff += increment;
     }
 
     p5.updatePixels();
-    p5.noLoop();
+    // p5.noLoop();
+
+    //upscale canvas
+    const g = p5.get(0, 0, width / scale, height / scale);
+    p5.image(g, 0, 0, width, height);
+
+    timeoff += timeincrement;
   };
 };
 
@@ -217,6 +237,7 @@ export const PerlinContourSketch: Sketch = (
     p5.fill(0);
 
     const scale = 2.5;
+    const increment = 0.001;
 
     let xoff = 0;
 
@@ -271,9 +292,9 @@ export const PerlinContourSketch: Sketch = (
         }
 
         p5.pixels[index + 3] = 255;
-        yoff += 0.001;
+        yoff += increment;
       }
-      xoff += 0.001;
+      xoff += increment;
     }
     p5.updatePixels();
 
