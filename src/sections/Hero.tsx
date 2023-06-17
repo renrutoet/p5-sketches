@@ -1,12 +1,6 @@
 import { ReactP5Wrapper } from "@p5-wrapper/react";
-import {
-  templateResponsiveSketch,
-  mousePositionSketch,
-  invertingWavesSketch,
-  PerlinContourSketch,
-  SimplexContourSketch,
-} from "../sketches/sketches";
 import { useLayoutEffect, useRef, useState } from "react";
+import SimplexContourSketch from "../sketches/SimplexContour";
 
 export const Hero = (): JSX.Element => {
   const container = useRef<HTMLDivElement>(null);
